@@ -1,0 +1,29 @@
+{
+  "name": "contact-management-app",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/paulsunny90/Contact-Management-App#readme",
+  "bugs": {
+    "url": "https://github.com/paulsunny90/Contact-Management-App/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulsunny90/Contact-Management-App.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "dev":"nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.1"
+  },
+  "devDependencies": {}
+}

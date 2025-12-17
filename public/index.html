@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Management App</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📇 Contact Management</h1>
+
+    <!-- Search with Dropdown -->
+    <div class="search-section">
+      <select class="search-dropdown">
+        <option value="all">Search By</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="phone">Phone</option>
+      </select>
+
+      <input 
+        type="text" 
+        class="search-box" 
+        placeholder="Search contacts..."
+      />
+    </div>
+
+    <!-- Add Contact Form -->
+    <form class="contact-form" id="contactform">
+      <input type="text" id="name"  placeholder="Name" />
+      <input type="number" id="countrycode" placeholder="country code" />
+      <input type="number" id="phnumber" placeholder="Phone no"  />
+      <button type="submit" >Add Contact</button>
+    </form>
+
+    <!-- Contact List -->
+    <div class="contact-list" id="contactlist">
+
+      
+
+    </div>
+  </div>
+<script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
