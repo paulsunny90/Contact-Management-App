@@ -8,7 +8,11 @@ const phnumberInput = document.getElementById("phnumber");
 const contactlist = document.getElementById("contactlist");
 const searchBox = document.querySelector(".search-box");
 const searchdropdown = document.querySelector(".search-dropdown");
-const sortOptions = document.getElementById("sortOptions"); // make sure to have this in HTML
+const sortOptions = document.getElementById("sortOptions"); 
+
+
+
+
 
 // Fetch contacts
 function fetchcontact() {
@@ -53,6 +57,8 @@ function renderContacts(contacts) {
     `;
     contactlist.appendChild(div);
   });
+  document.getElementById("add").style.display = "inline-block";
+  document.getElementById("edit").style.display = "none";
 }
 
 
@@ -73,7 +79,7 @@ function isDuplicatePhone(number) {
 //  submit
 form.addEventListener("submit", e => {
   e.preventDefault();
-
+  
   const contactData = {
     name: nameInput.value.trim(),
     countrycode: countrycodeInput.value.trim(),
@@ -95,10 +101,7 @@ form.addEventListener("submit", e => {
     return;
   }
 
-  if (isDuplicatePhone(contactData.phnumber)) {
-    alert("This phone number already exists!");
-    return;
-  }
+  
 
   if (editId) {
     fetch(`/api/contact/${editId}`, {
@@ -113,7 +116,11 @@ form.addEventListener("submit", e => {
         fetchcontact();
         alert("Contact updated successfully!");
       });
-  } else {
+  } else if (isDuplicatePhone(contactData.phnumber)) {
+    alert("This phone number already exists!");
+    return;
+  }
+   else {
     fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -126,6 +133,8 @@ form.addEventListener("submit", e => {
         alert("Contact added successfully!");
       });
   }
+  
+  
 });
 
 // Delete 
@@ -140,6 +149,8 @@ function editContact(id, name, countrycode, phnumber) {
   nameInput.value = name;
   countrycodeInput.value = countrycode;
   phnumberInput.value = phnumber;
+  document.getElementById("add").style.display = "none";
+  document.getElementById("edit").style.display = "inline-block";
 }
 
 // Search
