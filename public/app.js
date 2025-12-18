@@ -86,6 +86,7 @@ function isDuplicatePhone(number) {
   return allContacts.some(contact => contact.phnumber === number && contact._id !== editId);
 }
 
+
 //  submit
 form.addEventListener("submit", e => {
   e.preventDefault();
@@ -151,6 +152,7 @@ form.addEventListener("submit", e => {
 function deleteContact(id) {
   fetch(`/api/contact/${id}`, { method: "DELETE" })
     .then(() => fetchcontact());
+     alert("yoContact Deleted");
 }
 
 // Edit
