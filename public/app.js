@@ -12,16 +12,17 @@ function fetchcontact() {
   fetch("/api/contact")
     .then(res => res.json())
     .then(data => {
+
+     Contacts = data;
+
       contactlist.innerHTML = "";
 
-      // reset dropdown
       searchdropdown.innerHTML = `<option value="all">All Country Codes</option>`;
 
-      // store unique country codes
       const codes = new Set();
 
       data.forEach(contact => {
-        // carde
+      
         const div = document.createElement("div");
         div.className = "contact-card";
 
@@ -70,6 +71,16 @@ form.addEventListener("submit", e => {
   if (!contactData.name || !contactData.phnumber) {
     alert("Name and Phone number are required!");
     return;
+  }
+
+  const isDuplicate =data.some(contact =>
+  contact.phnumber === contactData.phnumber &&
+  contact._id !== editId
+);
+
+  if(isDuplicate){
+    alert("this phone number already exists!")
+    return
   }
 
   
@@ -156,7 +167,7 @@ searchdropdown.addEventListener("change", () => {
       .textContent.replace("Country Code:", "")
       .trim();
 
-    if (selectedCode === "all" || countryCode === selectedCode) {
+    if (selectedCode === "all" || countryCode === `selectedCode`) {
       card.style.display = "block";
     } else {
       card.style.display = "none";
