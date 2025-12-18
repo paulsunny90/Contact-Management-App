@@ -11,37 +11,34 @@
 <body>
 
   <div class="container">
-    <h1>📇 Contact Management</h1>
+    <h1>📱 Contact Management</h1>
 
-    <!-- Search with Dropdown -->
+    <!-- Search and Filter Section -->
     <div class="search-section">
       <select class="search-dropdown" id="searchdropdown">
-
+        <option value="all">All Countries</option>
       </select>
-      <select id="sortOptions" class="dropdown" >
-        <option value="all">All</option>
-        <option value="new">Newest</option>
-        <option value="old">Oldest</option>
+      <select id="sortOptions" class="dropdown">
+        <option value="all">Sort By</option>
+        <option value="new">Newest First</option>
+        <option value="old">Oldest First</option>
       </select>
-
-
-
-      <input type="text" class="search-box" id="searchbox" placeholder="Search contacts..." />
+      <input type="text" class="search-box" id="searchbox" placeholder="🔍 Search contacts..." />
     </div>
 
     <!-- Add Contact Form -->
     <form class="contact-form" id="contactform">
-      <input type="text" id="name" placeholder="Name" />
-      <input type="number" id="countrycode" placeholder="country code" />
-      <input type="number" id="phnumber" placeholder="Phone no" />
-      <button type="submit">Add Contact</button>
+      <input type="text" id="name" placeholder="👤 Full Name" required />
+      <input type="number" id="countrycode" placeholder="+1" required />
+      <input type="number" id="phnumber" placeholder="Phone Number" required />
+      <button type="submit">
+        <span>+</span> Add Contact
+      </button>
     </form>
 
     <!-- Contact List -->
     <div class="contact-list" id="contactlist">
-
-
-
+      <!-- Contacts will be dynamically added here -->
     </div>
   </div>
   <script src="app.js"></script>

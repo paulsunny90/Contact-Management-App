@@ -65,7 +65,7 @@ function isValidPhone(number) {
   return /^\d{5,15}$/.test(number);
 }
 
-// Check duplicate phone
+//  duplicate
 function isDuplicatePhone(number) {
   return allContacts.some(contact => contact.phnumber === number && contact._id !== editId);
 }
