@@ -1,5 +1,6 @@
 let editId = null;
 let allContacts = [];
+let filteredContacts = [];
 
 const form = document.getElementById("contactform");
 const nameInput = document.getElementById("name");
@@ -20,7 +21,8 @@ function fetchcontact() {
     .then(res => res.json())
     .then(data => {
       allContacts = data;
-      renderContacts(allContacts);
+      filteredContacts = [...allContacts];
+      renderContacts(filteredContacts);
 
       //  country codes
       searchdropdown.innerHTML = `<option value="all">All Country Codes</option>`;
@@ -148,11 +150,13 @@ form.addEventListener("submit", e => {
   
 });
 
-// Delete 
+// Delete
 function deleteContact(id) {
   fetch(`/api/contact/${id}`, { method: "DELETE" })
-    .then(() => fetchcontact());
-     alert("yoContact Deleted");
+    .then(() => {
+      fetchcontact();
+      alert("Contact Deleted");
+    });
 }
 
 // Edit
@@ -168,35 +172,33 @@ function editContact(id, name, countrycode, phnumber) {
 // Search
 searchBox.addEventListener("input", () => {
   const value = searchBox.value.toLowerCase();
-  const cards = document.querySelectorAll(".contact-card");
+  filteredContacts = allContacts.filter(contact => {
+    const name = contact.name.toLowerCase();
+    const countryCode = contact.countrycode.toString().toLowerCase();
+    const phone = contact.phnumber.toString().toLowerCase();
 
-  cards.forEach(card => {
-    const name = card.querySelector("h3").textContent.toLowerCase();
-    const countryCode = card.querySelectorAll("p")[0].textContent.replace("Country Code:", "").trim().toLowerCase();
-    const phone = card.querySelectorAll("p")[1].textContent.replace("Phone:", "").trim().toLowerCase();
-
-    card.style.display = (name.includes(value) || countryCode.includes(value) || phone.includes(value)) ? "block" : "none";
+    return name.includes(value) || countryCode.includes(value) || phone.includes(value);
   });
+  renderContacts(filteredContacts);
 });
 
-// Filter 
+// Filter
 searchdropdown.addEventListener("change", () => {
   const selectedCode = searchdropdown.value;
-  const cards = document.querySelectorAll(".contact-card");
-
-  cards.forEach(card => {
-    const countryCode = card.querySelectorAll("p")[0].textContent.replace("Country Code:", "").trim();
-    card.style.display = (selectedCode === "all" || countryCode === selectedCode) ? "block" : "none";
-  });
+  if (selectedCode === "all") {
+    filteredContacts = [...allContacts];
+  } else {
+    filteredContacts = allContacts.filter(contact => contact.countrycode.toString() === selectedCode);
+  }
+  renderContacts(filteredContacts);
 });
 
-// Sort 
+// Sort
 sortOptions.addEventListener("change", () => {
-  let sorted = [...allContacts];
+  let sorted = [...filteredContacts];
   if (sortOptions.value === "new") {
     sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  }
-  if (sortOptions.value === "old") {
+  } else if (sortOptions.value === "old") {
     sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   }
   renderContacts(sorted);
