@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Management App</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <div class="container">
@@ -13,39 +15,36 @@
 
     <!-- Search with Dropdown -->
     <div class="search-section">
-      <select class="search-dropdown"id="searchdropdown">
-       
+      <select class="search-dropdown" id="searchdropdown">
+
+      </select>
+      <select id="sortOptions" class="dropdown" >
+        <option value="all">All</option>
+        <option value="new">Newest</option>
+        <option value="old">Oldest</option>
       </select>
 
-      <input type="text" class="search-box"id="searchbox" placeholder="Search contacts..."/>
+
+
+      <input type="text" class="search-box" id="searchbox" placeholder="Search contacts..." />
     </div>
 
     <!-- Add Contact Form -->
     <form class="contact-form" id="contactform">
-      <input type="text" id="name"  placeholder="Name" />
+      <input type="text" id="name" placeholder="Name" />
       <input type="number" id="countrycode" placeholder="country code" />
-      <input type="number" id="phnumber" placeholder="Phone no"  />
-      <button type="submit" >Add Contact</button>
+      <input type="number" id="phnumber" placeholder="Phone no" />
+      <button type="submit">Add Contact</button>
     </form>
 
     <!-- Contact List -->
     <div class="contact-list" id="contactlist">
 
-      
+
 
     </div>
   </div>
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-

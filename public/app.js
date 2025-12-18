@@ -1,4 +1,6 @@
 let editId = null;
+let allContacts = [];
+
 const form = document.getElementById("contactform");
 const nameInput = document.getElementById("name");
 const countrycodeInput = document.getElementById("countrycode");
@@ -6,46 +8,20 @@ const phnumberInput = document.getElementById("phnumber");
 const contactlist = document.getElementById("contactlist");
 const searchBox = document.querySelector(".search-box");
 const searchdropdown = document.querySelector(".search-dropdown");
+const sortOptions = document.getElementById("sortOptions"); // make sure to have this in HTML
 
-// fetch
+// Fetch contacts
 function fetchcontact() {
   fetch("/api/contact")
     .then(res => res.json())
     .then(data => {
+      allContacts = data;
+      renderContacts(allContacts);
 
-     Contacts = data;
-
-      contactlist.innerHTML = "";
-
+      //  country codes
       searchdropdown.innerHTML = `<option value="all">All Country Codes</option>`;
-
       const codes = new Set();
-
       data.forEach(contact => {
-      
-        const div = document.createElement("div");
-        div.className = "contact-card";
-
-        div.innerHTML = `
-          <div class="contact-info">
-            <div class="text">
-              <h3>${contact.name}</h3>
-              <p>Country Code: ${contact.countrycode}</p>
-              <p>Phone: ${contact.phnumber}</p>
-            </div>
-            <button onclick="deleteContact('${contact._id}')">Delete</button>
-            <button onclick="editContact(
-              '${contact._id}',
-              '${contact.name}',
-              '${contact.countrycode}',
-              '${contact.phnumber}'
-            )">Edit</button>
-          </div>
-        `;
-
-        contactlist.appendChild(div);
-
-        //options
         if (!codes.has(contact.countrycode)) {
           codes.add(contact.countrycode);
           const option = document.createElement("option");
@@ -58,7 +34,43 @@ function fetchcontact() {
     .catch(err => console.error("Fetch error:", err));
 }
 
- // edit
+// Render contacts
+function renderContacts(contacts) {
+  contactlist.innerHTML = "";
+  contacts.forEach(contact => {
+    const div = document.createElement("div");
+    div.className = "contact-card";
+    div.innerHTML = `
+      <div class="contact-info">
+        <div class="text">
+          <h3>${contact.name}</h3>
+          <p>Country Code: ${contact.countrycode}</p>
+          <p>Phone: ${contact.phnumber}</p>
+        </div>
+        <button onclick="deleteContact('${contact._id}')">Delete</button>
+        <button onclick="editContact('${contact._id}','${contact.name}','${contact.countrycode}','${contact.phnumber}')">Edit</button>
+      </div>
+    `;
+    contactlist.appendChild(div);
+  });
+}
+
+
+function isValidName(name) {
+  return /^[A-Za-z ]{3,}$/.test(name);
+}
+
+
+function isValidPhone(number) {
+  return /^\d{5,15}$/.test(number);
+}
+
+// Check duplicate phone
+function isDuplicatePhone(number) {
+  return allContacts.some(contact => contact.phnumber === number && contact._id !== editId);
+}
+
+//  submit
 form.addEventListener("submit", e => {
   e.preventDefault();
 
@@ -73,17 +85,21 @@ form.addEventListener("submit", e => {
     return;
   }
 
-  const isDuplicate =data.some(contact =>
-  contact.phnumber === contactData.phnumber &&
-  contact._id !== editId
-);
-
-  if(isDuplicate){
-    alert("this phone number already exists!")
-    return
+  if (!isValidName(contactData.name)) {
+    alert("Name must contain only letters and at least 3 characters");
+    return;
   }
 
-  
+  if (!isValidPhone(contactData.phnumber)) {
+    alert("Phone number must be 5-15 digits");
+    return;
+  }
+
+  if (isDuplicatePhone(contactData.phnumber)) {
+    alert("This phone number already exists!");
+    return;
+  }
+
   if (editId) {
     fetch(`/api/contact/${editId}`, {
       method: "PUT",
@@ -95,10 +111,9 @@ form.addEventListener("submit", e => {
         editId = null;
         form.reset();
         fetchcontact();
+        alert("Contact updated successfully!");
       });
-  }
-  
-  else {
+  } else {
     fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -108,17 +123,18 @@ form.addEventListener("submit", e => {
       .then(() => {
         form.reset();
         fetchcontact();
+        alert("Contact added successfully!");
       });
   }
 });
 
-// delete
+// Delete 
 function deleteContact(id) {
   fetch(`/api/contact/${id}`, { method: "DELETE" })
     .then(() => fetchcontact());
 }
 
-// edit
+// Edit
 function editContact(id, name, countrycode, phnumber) {
   editId = id;
   nameInput.value = name;
@@ -126,54 +142,41 @@ function editContact(id, name, countrycode, phnumber) {
   phnumberInput.value = phnumber;
 }
 
-// search
+// Search
 searchBox.addEventListener("input", () => {
   const value = searchBox.value.toLowerCase();
   const cards = document.querySelectorAll(".contact-card");
 
   cards.forEach(card => {
     const name = card.querySelector("h3").textContent.toLowerCase();
-    const countryCode = card
-      .querySelectorAll("p")[0]
-      .textContent.replace("Country Code:", "")
-      .trim()
-      .toLowerCase();
-    const phone = card
-      .querySelectorAll("p")[1]
-      .textContent.replace("Phone:", "")
-      .trim()
-      .toLowerCase();
+    const countryCode = card.querySelectorAll("p")[0].textContent.replace("Country Code:", "").trim().toLowerCase();
+    const phone = card.querySelectorAll("p")[1].textContent.replace("Phone:", "").trim().toLowerCase();
 
-    if (
-      name.includes(value) ||
-      countryCode.includes(value) ||
-      phone.includes(value)
-    ) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+    card.style.display = (name.includes(value) || countryCode.includes(value) || phone.includes(value)) ? "block" : "none";
   });
 });
 
-// fillter
+// Filter 
 searchdropdown.addEventListener("change", () => {
   const selectedCode = searchdropdown.value;
   const cards = document.querySelectorAll(".contact-card");
 
   cards.forEach(card => {
-    const countryCode = card
-      .querySelectorAll("p")[0]
-      .textContent.replace("Country Code:", "")
-      .trim();
-
-    if (selectedCode === "all" || countryCode === `selectedCode`) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+    const countryCode = card.querySelectorAll("p")[0].textContent.replace("Country Code:", "").trim();
+    card.style.display = (selectedCode === "all" || countryCode === selectedCode) ? "block" : "none";
   });
 });
 
+// Sort 
+sortOptions.addEventListener("change", () => {
+  let sorted = [...allContacts];
+  if (sortOptions.value === "new") {
+    sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+  if (sortOptions.value === "old") {
+    sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  }
+  renderContacts(sorted);
+});
 
 fetchcontact();

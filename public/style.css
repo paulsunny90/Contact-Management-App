@@ -216,3 +216,12 @@ h1 {
   color: #ffffff;
 }
 
+.dropdown{
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  min-width: 120px;
+} 
+
