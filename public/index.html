@@ -31,18 +31,25 @@
       <input type="text" id="name" placeholder="👤 Full Name" required />
       <input type="number" id="countrycode" placeholder="+1" required />
       <input type="number" id="phnumber" placeholder="Phone Number" required />
-      <button type="submit" id="add">
+      <button type="submit">
         <span>+</span> Add Contact
-      </button>
-      <button type="submit" id="edit">
-        <span>+</span> Edit Contact
       </button>
     </form>
 
     <!-- Contact List -->
-    <div class="contact-list" id="contactlist">
-      <!-- Contacts will be dynamically added here -->
-    </div>
+    <table class="contact-list" id="contactlist">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Country Code</th>
+          <th>Phone Number</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Contacts will be dynamically added here -->
+      </tbody>
+    </table>
   </div>
   <script src="app.js"></script>
 </body>

@@ -224,123 +224,135 @@ h1::before {
   transform: translateY(0);
 }
 
-/* Contact List */
+/* Contact List - Table Layout */
 .contact-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contact-card {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
   background: var(--glass-bg);
   border-radius: 16px;
-  border: 1px solid var(--glass-border);
   overflow: hidden;
-  transition: all 0.3s ease;
   box-shadow: 0 4px 20px var(--shadow);
   backdrop-filter: blur(15px);
-  position: relative;
+  border: 1px solid var(--glass-border);
 }
 
-.contact-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
+.contact-list thead {
   background: var(--gradient-primary);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  color: white;
 }
 
-.contact-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px var(--shadow-hover);
-  border-color: var(--accent-primary);
+.contact-list th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.contact-card:hover::before {
-  opacity: 1;
+.contact-list tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
-.contact-info {
-  padding: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
+.contact-list tbody tr:hover {
+  background: rgba(6, 182, 212, 0.05);
+  transform: scale(1.01);
 }
 
-.contact-info .text h3 {
-  font-size: 18px;
+.contact-list tbody tr:last-child {
+  border-bottom: none;
+}
+
+.contact-list td {
+  padding: 16px 20px;
+  vertical-align: middle;
+}
+
+/* Table cell content styling */
+.contact-name {
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
 }
 
-.contact-info .text p {
+.contact-country {
   font-size: 14px;
   color: var(--text-secondary);
-  margin: 2px 0;
   display: flex;
   align-items: center;
 }
 
-.contact-info .text p::before {
-  content: "📞";
-  margin-right: 8px;
+.contact-country::before {
+  content: "🌍";
+  margin-right: 6px;
   font-size: 12px;
   opacity: 0.7;
 }
 
-/* Action Buttons */
-.actions {
+.contact-phone {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
   display: flex;
-  gap: 10px;
+  align-items: center;
 }
 
-.contact-info button {
-  padding: 8px 16px;
+.contact-phone::before {
+  content: "📞";
+  margin-right: 6px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Action Buttons - Table Layout */
+.contact-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.contact-actions button {
+  padding: 6px 12px;
   border: 2px solid transparent;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.3px;
   backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
+  min-width: 60px;
 }
 
-.contact-info button:first-of-type {
+.contact-actions button:first-of-type {
   background: var(--glass-bg);
   color: var(--accent-secondary);
   border-color: var(--accent-secondary);
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
 }
 
-.contact-info button:first-of-type:hover {
+.contact-actions button:first-of-type:hover {
   background: var(--accent-secondary);
   color: white;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
 }
 
-.contact-info button:last-of-type {
+.contact-actions button:last-of-type {
   background: var(--glass-bg);
   color: var(--danger);
   border-color: var(--danger);
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
 }
 
-.contact-info button:last-of-type:hover {
+.contact-actions button:last-of-type:hover {
   background: var(--danger);
   color: white;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
 }
 
 /* Empty State */
@@ -387,16 +399,19 @@ h1::before {
     gap: 12px;
   }
 
-  .contact-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 20px;
+  /* Table responsive - stack on mobile */
+  .contact-list {
+    font-size: 14px;
   }
 
-  .actions {
-    width: 100%;
-    justify-content: flex-end;
+  .contact-list th,
+  .contact-list td {
+    padding: 12px 16px;
+  }
+
+  .contact-actions {
+    flex-direction: column;
+    gap: 6px;
   }
 }
 
@@ -415,17 +430,37 @@ h1::before {
     font-size: 1.8rem;
   }
 
-  .contact-info {
-    padding: 16px;
-  }
-
-  .contact-info .text h3 {
-    font-size: 16px;
-  }
-
-  .contact-info button {
-    padding: 6px 12px;
+  /* Mobile table styling */
+  .contact-list {
     font-size: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contact-list th,
+  .contact-list td {
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  .contact-name {
+    font-size: 14px;
+  }
+
+  .contact-country,
+  .contact-phone {
+    font-size: 12px;
+  }
+
+  .contact-actions {
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .contact-actions button {
+    padding: 4px 8px;
+    font-size: 11px;
+    min-width: 50px;
   }
 }
 

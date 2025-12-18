@@ -40,25 +40,35 @@ function fetchcontact() {
 
 // Render contacts
 function renderContacts(contacts) {
-  contactlist.innerHTML = "";
-  contacts.forEach(contact => {
-    const div = document.createElement("div");
-    div.className = "contact-card";
-    div.innerHTML = `
-      <div class="contact-info">
-        <div class="text">
-          <h3>${contact.name}</h3>
-          <p>Country Code: ${contact.countrycode}</p>
-          <p>Phone: ${contact.phnumber}</p>
-        </div>
-        <button onclick="deleteContact('${contact._id}')">Delete</button>
-        <button onclick="editContact('${contact._id}','${contact.name}','${contact.countrycode}','${contact.phnumber}')">Edit</button>
-      </div>
+  const tbody = contactlist.querySelector('tbody');
+  tbody.innerHTML = "";
+
+  if (contacts.length === 0) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.innerHTML = `
+      <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-muted);">
+        No contacts found. Add your first contact above!
+      </td>
     `;
-    contactlist.appendChild(div);
+    tbody.appendChild(emptyRow);
+    return;
+  }
+
+  contacts.forEach(contact => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><span class="contact-name">${contact.name}</span></td>
+      <td><span class="contact-country">+${contact.countrycode}</span></td>
+      <td><span class="contact-phone">${contact.phnumber}</span></td>
+      <td>
+        <div class="contact-actions">
+          <button onclick="editContact('${contact._id}','${contact.name}','${contact.countrycode}','${contact.phnumber}')">Edit</button>
+          <button onclick="deleteContact('${contact._id}')">Delete</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(row);
   });
-  document.getElementById("add").style.display = "inline-block";
-  document.getElementById("edit").style.display = "none";
 }
 
 
